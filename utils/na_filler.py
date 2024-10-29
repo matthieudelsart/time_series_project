@@ -8,7 +8,7 @@ from qolmat.imputations import imputers
 from qolmat.utils import data, plot
 from sklearn.linear_model import LinearRegression
 
-def Imputer_MICE(df):
+def Imputer_MICE(df, columns_to_impute):
     
     imputer_mice = imputers.ImputerMICE(
     estimator=LinearRegression(),
@@ -16,15 +16,15 @@ def Imputer_MICE(df):
     max_iter=100
     )
 
-    df_imputed = imputer_mice.fit_transform(df)
+    df[columns_to_impute] = imputer_mice.fit_transform(df[columns_to_impute])
 
-    return df_imputed
+    return df
 
 def Imputer_TSOU(df):
 
     imputer_tsou = imputers.ImputerEM(
     model="VAR",
-    method="mle", # Check if we take mle or sample
+    method="mle", 
     max_iter_em=30,
     n_iter_ou=15,
     dt=1e-3,
