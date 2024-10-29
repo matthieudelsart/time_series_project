@@ -3,12 +3,11 @@ start_time = time.time()
 
 import numpy as np
 import pandas as pd
-from utils.preprocessing import preprocess_data
 from utils.na_filler import Imputer_TSOU
 
 df = pd.read_csv('data/train.csv')
 
-df = preprocess_data(df)
+df['id'] = pd.to_datetime(df['id'])
 df.set_index('id', inplace=True)
 
 cols_to_impute = ["valeur_NO2", "valeur_CO", "valeur_O3", "valeur_PM10", "valeur_PM25"]
