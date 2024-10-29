@@ -55,12 +55,14 @@ def add_cyclic_datetime_features(df):
     
     return df
 
-def preprocess_data(data):
+def preprocess_data(data, add_cyclic_features=True):
     data = clean_data(data)
     data = integrate_holidays(data)
     data = integrate_weather(data)
     data = add_datetime_columns(data)
-    data = add_cyclic_datetime_features(data)
+    if add_cyclic_features:
+        data = add_cyclic_datetime_features(data)
     return data
 
-print(preprocess_data(data_train).head())
+if __name__ == "__main__":
+    print(preprocess_data(data_train).head())
