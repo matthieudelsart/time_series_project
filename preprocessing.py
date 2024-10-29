@@ -6,13 +6,12 @@ data_test = pd.read_csv('data/test.csv')
 
 
 def clean_data(data):
+    """Transform id column in date format"""
     data['id'] = pd.to_datetime(data['id'])
     return data
 
 def integrate_holidays(data):
-    """Integrate holidays data into the main dataset.
-    Usage: integrate_holidays(data_train, split="train")"""
-    
+    """Integrate holidays data into the main dataset"""
     df_holidays = pd.read_csv(f"external_data/holidays.csv")
     df_holidays = clean_data(df_holidays)
     data = data.merge(df_holidays, how='left', on='id')
