@@ -163,3 +163,10 @@ cython_debug/
 
 # Old data
 external_data/weather_archives
+
+# Mac
+.DS_Store
+
+# Augustin
+opendata_txt_2023
+test.ipynb
