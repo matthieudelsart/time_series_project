@@ -20,7 +20,7 @@ def Imputer_MICE(df, columns_to_impute):
 
     return df
 
-def Imputer_TSOU(df):
+def Imputer_TSOU(df, columns_to_impute):
 
     imputer_tsou = imputers.ImputerEM(
     model="VAR",
@@ -30,7 +30,7 @@ def Imputer_TSOU(df):
     dt=1e-3,
     p=1)
 
-    df_imputed = imputer_tsou.fit_transform(df)
+    df[columns_to_impute] = imputer_tsou.fit_transform(df[columns_to_impute])
 
-    return df_imputed
+    return df
     
