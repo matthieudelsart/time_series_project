@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from sklearn.pipeline import Pipeline
 
 data_train = pd.read_csv('data/train.csv')
@@ -24,8 +25,43 @@ def integrate_weather(data):
     data_with_weather.drop('date', axis=1, inplace=True)
     return data_with_weather
 
+def add_datetime_columns(df):
+    """Integrate datetime columns into the main dataset."""
+    df['Year'] = df['id'].dt.year
+    df['Month'] = df['id'].dt.month
+    df['Weekday'] = df['id'].dt.weekday
+    df['Day'] = df['id'].dt.day
+    df['Hour'] = df['id'].dt.hour
+    df['is_weekend'] = df['id'].dt.weekday >= 5
+    return df
+
+def add_cyclic_datetime_features(df):
+    """Add cyclic datetime features to the dataset."""
+
+    # Extraction de l'année, jour de l'année et heure
+    df['DayOfYear'] = df['id'].dt.dayofyear
+    df['HourOfDay'] = df['id'].dt.hour
+
+    # Création des features cycliques
+    # Pour le jour de l'année (365 jours dans un cycle)
+    df['DayOfYear_sin'] = np.sin(2 * np.pi * df['DayOfYear'] / 365)
+    df['DayOfYear_cos'] = np.cos(2 * np.pi * df['DayOfYear'] / 365)
+    
+    # Pour l'heure de la journée (24 heures dans un cycle)
+    df['HourOfDay_sin'] = np.sin(2 * np.pi * df['HourOfDay'] / 24)
+    df['HourOfDay_cos'] = np.cos(2 * np.pi * df['HourOfDay'] / 24)
+    
+    # Optionnel : suppression des colonnes intermédiaires
+    df = df.drop(columns=['DayOfYear', 'HourOfDay'])
+    
+    return df
+
 def preprocess_data(data):
     data = clean_data(data)
     data = integrate_holidays(data)
     data = integrate_weather(data)
+    data = add_datetime_columns(data)
+    data = add_cyclic_datetime_features(data)
     return data
+
+print(preprocess_data(data_train).head())
