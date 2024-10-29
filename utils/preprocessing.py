@@ -43,7 +43,7 @@ def add_datetime_columns(df):
     df['Weekday'] = df['id'].dt.weekday
     df['Day'] = df['id'].dt.day
     df['Hour'] = df['id'].dt.hour
-    df['is_weekend'] = df['id'].dt.weekday >= 5
+    df['is_weekend'] = (df['id'].dt.weekday >= 5) * 1
     return df
 
 def add_cyclic_datetime_features(df):
@@ -67,15 +67,25 @@ def add_cyclic_datetime_features(df):
 
     return df
 
-def preprocess_data(data, add_cyclic_features=True):
+def preprocess_data(data, add_cyclic_features=True, add_filter_outliers=True):
     data = clean_data(data)
-    data = filter_outliers(data)
+    if add_filter_outliers:
+        data = filter_outliers(data)
     data = integrate_holidays(data)
     data = integrate_weather(data)
     data = add_datetime_columns(data)
     if add_cyclic_features:
         data = add_cyclic_datetime_features(data)
     return data
+
+
+#### Submission
+def clean_for_submission(data):
+    data = data[['id', 'valeur_NO2', 'valeur_CO', 'valeur_O3', 'valeur_PM10', 'valeur_PM25']]
+    data['id'] = pd.to_datetime(data['id']).dt.strftime('%Y-%m-%d %H')
+    return data
+    
+
 
 if __name__ == "__main__":
     print(preprocess_data(data_train).head())
