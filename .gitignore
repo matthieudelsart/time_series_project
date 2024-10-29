@@ -170,3 +170,6 @@ external_data/weather_archives
 # Augustin
 opendata_txt_2023
 test.ipynb
+
+# Autogluon
+autogluon*
