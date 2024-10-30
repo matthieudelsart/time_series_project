@@ -94,6 +94,5 @@ def clean_for_submission(data):
 if __name__ == "__main__":
     data_train = pd.read_csv('data/imputed_train_v2.csv')
     data_test = pd.read_csv('data/test.csv')
-    data_train = preprocess_data(data_train, add_filter_outliers=False)
     preprocess_data(data_test, add_filter_outliers=False).to_csv('data/test_preprocessed.csv', index=False)
     preprocess_data(data_train, add_filter_outliers=False).to_csv('data/train_preprocessed.csv', index=False)
