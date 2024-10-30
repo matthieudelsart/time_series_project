@@ -36,6 +36,13 @@ def integrate_weather(data):
     data_with_weather.drop('date', axis=1, inplace=True)
     return data_with_weather
 
+def integrate_traffic(data):
+    """Integrate traffic data into the main dataset."""
+    df_traffic = pd.read_csv(f"external_data/traffic_data.csv", parse_dates=['date'])
+    data_with_traffic = pd.merge(data, df_traffic, left_on='id', right_on='date', how='left')
+    data_with_traffic.drop('date', axis=1, inplace=True)
+    return data_with_traffic
+
 def add_datetime_columns(df):
     """Integrate datetime columns into the main dataset."""
     df['Year'] = df['id'].dt.year
@@ -72,6 +79,7 @@ def preprocess_data(data, add_cyclic_features=True, add_filter_outliers=True):
         data = filter_outliers(data)
     data = integrate_holidays(data)
     data = integrate_weather(data)
+    data = integrate_traffic(data)
     data = add_datetime_columns(data)
     if add_cyclic_features:
         data = add_cyclic_datetime_features(data)
@@ -87,5 +95,5 @@ def clean_for_submission(data):
 
 
 if __name__ == "__main__":
-    #print(preprocess_data(data_train).head())
-    preprocess_data(data_test, add_filter_outliers=False).to_csv('data/test_preprocessed.csv', index=False)
+    print(preprocess_data(data_train).columns)
+    # preprocess_data(data_test, add_filter_outliers=False).to_csv('data/test_preprocessed.csv', index=False)
