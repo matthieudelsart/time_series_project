@@ -168,7 +168,18 @@ external_data/weather_archives
 .DS_Store
 
 # Augustin
+opendata_txt_2020
+opendata_txt_2021
+opendata_txt_2022
 opendata_txt_2023
+traffic_data_2024
+traffic_data_2024_preprocessed
+2024-09-08_to_2024-09-14.csv
+comptages-routiers-permanents.json
+iu_ac_to_remove_lst.txt
+test_data.csv
+test.ipynb
+traffic_data_2020_2023.csv
 test.ipynb
 
 # Autogluon
