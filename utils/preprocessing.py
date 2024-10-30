@@ -40,30 +40,29 @@ def add_datetime_columns(df):
     """Integrate datetime columns into the main dataset."""
     df['Year'] = df['id'].dt.year
     df['Month'] = df['id'].dt.month
-    df['Weekday'] = df['id'].dt.weekday
+    # df['Weekday'] = df['id'].dt.weekday
     df['Day'] = df['id'].dt.day
-    df['Hour'] = df['id'].dt.hour
+    # df['Hour'] = df['id'].dt.hour
     df['is_weekend'] = (df['id'].dt.weekday >= 5) * 1
     return df
 
 def add_cyclic_datetime_features(df):
     """Add cyclic datetime features to the dataset."""
 
-    # Extraction de l'année, jour de l'année et heure
     df['DayOfYear'] = df['id'].dt.dayofyear
     df['HourOfDay'] = df['id'].dt.hour
+    df['Weekday'] = df['id'].dt.weekday
 
-    # Création des features cycliques
-    # Pour le jour de l'année (365 jours dans un cycle)
     df['DayOfYear_sin'] = np.sin(2 * np.pi * df['DayOfYear'] / 365)
     df['DayOfYear_cos'] = np.cos(2 * np.pi * df['DayOfYear'] / 365)
 
-    # Pour l'heure de la journée (24 heures dans un cycle)
     df['HourOfDay_sin'] = np.sin(2 * np.pi * df['HourOfDay'] / 24)
     df['HourOfDay_cos'] = np.cos(2 * np.pi * df['HourOfDay'] / 24)
+    
+    df['Weekday_sin'] = np.sin(2 * np.pi * df['Weekday'] / 7)
+    df['Weekday_cos'] = np.cos(2 * np.pi * df['Weekday'] / 7)
 
-    # Optionnel : suppression des colonnes intermédiaires
-    df = df.drop(columns=['DayOfYear', 'HourOfDay'])
+    # df = df.drop(columns=['DayOfYear', 'HourOfDay', 'Weekday'])
 
     return df
 
@@ -88,4 +87,5 @@ def clean_for_submission(data):
 
 
 if __name__ == "__main__":
-    print(preprocess_data(data_train).head())
+    #print(preprocess_data(data_train).head())
+    preprocess_data(data_test, add_filter_outliers=False).to_csv('data/test_preprocessed.csv', index=False)
