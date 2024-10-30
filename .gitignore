@@ -180,3 +180,7 @@ iu_ac_to_remove_lst.txt
 test_data.csv
 test.ipynb
 traffic_data_2020_2023.csv
+test.ipynb
+
+# Autogluon
+autogluon*
