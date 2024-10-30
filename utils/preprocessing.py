@@ -1,9 +1,6 @@
 import pandas as pd
 import numpy as np
 
-data_train = pd.read_csv('data/train.csv')
-data_test = pd.read_csv('data/test.csv')
-
 
 def clean_data(data):
     """Transform id column in date format"""
@@ -95,5 +92,7 @@ def clean_for_submission(data):
 
 
 if __name__ == "__main__":
+    data_train = pd.read_csv('data/train.csv')
+    data_test = pd.read_csv('data/test.csv')
     print(preprocess_data(data_train).columns)
     # preprocess_data(data_test, add_filter_outliers=False).to_csv('data/test_preprocessed.csv', index=False)
